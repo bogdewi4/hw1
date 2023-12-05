@@ -97,5 +97,3 @@ app.post('/videos', (req: RequestWithBody<CreateVideo>, res: Response) => {
 app.listen(PORT, () => {
   console.log(`App start on port: ${PORT}`);
 });
-
-export default app;
