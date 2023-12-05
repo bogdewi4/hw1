@@ -1,13 +1,15 @@
 import { Response, Router } from 'express';
+
 import {
+  RESOLUTIONS,
+  type Error,
+  type RequestWithBody,
+  type RequestWithParams,
   CreateVideo,
-  Error,
-  RequestWithBody,
-  RequestWithParams,
-  VideoDB,
-  resolutions,
-  videos,
-} from '../setting';
+} from '../types';
+
+import { videos } from '../db';
+import { VideoDB } from '../model';
 
 export const videoRouter = Router({});
 
@@ -58,7 +60,7 @@ videoRouter.post('/', (req: RequestWithBody<CreateVideo>, res: Response) => {
 
   if (availableResolutions && Array.isArray(availableResolutions)) {
     availableResolutions.forEach((resolution) => {
-      !resolutions.includes(resolution) &&
+      !RESOLUTIONS.includes(resolution) &&
         error.errorMessages.push({
           message: 'Invalid availableResolutions!',
           field: 'availableResolutions',
