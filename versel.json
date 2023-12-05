@@ -1,6 +1,7 @@
 {
   "version": 2,
   "name": "hw1-videos",
-  "builds": [{ "src": "dist/index.js", "use": "@vercel/node" }],
-  "routes": [{ "src": "/(.*)", "dest": "dist/index.js" }]
+  "buildCommand": "npm run build",
+  "builds": [{ "src": "src/index.ts", "use": "@vercel/node" }],
+  "routes": [{ "src": "/(.*)", "dest": "src/index.ts" }]
 }
