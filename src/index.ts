@@ -1,4 +1,4 @@
-import { app } from '../src/setting';
+import { app } from './setting';
 
 const PORT = 5000;
 
@@ -6,4 +6,4 @@ app.listen(PORT, () => {
   console.log(`App start on port: ${PORT}`);
 });
 
-module.exports = app;
+export default app;
