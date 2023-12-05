@@ -2,5 +2,6 @@
   "version": 2,
   "name": "hw1-videos",
   "builds": [{ "src": "src/index.ts", "use": "@vercel/node" }],
-  "routes": [{ "src": "/(.*)", "dest": "src/index.ts" }]
+  "routes": [{ "src": "/(.*)", "dest": "src/index.ts" }],
+  "rewrites": [{ "source": "/api/(.*)", "destination": "/api" }]
 }
