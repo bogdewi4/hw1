@@ -8,23 +8,18 @@ import {
   CreateVideo,
 } from '../types';
 
-import { videos } from '../db';
+import { getVideos, setVideo, filterVideos } from '../db';
 import { VideoDB } from '../model';
 
 export const videoRouter = Router({});
 
 videoRouter.get('/', (_req, res) => {
-  res.send(videos);
-});
-
-videoRouter.get('/', (_req, res) => {
-  res.send(videos);
+  res.send(getVideos());
 });
 
 videoRouter.get('/:id', (req: RequestWithParams<{ id: string }>, res) => {
   const videoId = +req.params.id;
-
-  const findedVideo = videos.find(({ id }) => id === videoId);
+  const findedVideo = getVideos().find(({ id }) => id === videoId);
 
   if (!findedVideo) {
     res.sendStatus(404);
@@ -91,7 +86,18 @@ videoRouter.post('/', (req: RequestWithBody<CreateVideo>, res: Response) => {
     availableResolutions,
   };
 
-  videos.push(newVideo);
-
+  setVideo(newVideo);
   res.status(201).send(newVideo);
+});
+
+videoRouter.delete('/:id', (req: RequestWithParams<{ id: string }>, res) => {
+  const videoId = +req.params.id;
+  const isVideoDeleted = filterVideos((video) => video.id === videoId);
+
+  if (!isVideoDeleted) {
+    res.sendStatus(404);
+    return;
+  }
+
+  res.sendStatus(204);
 });

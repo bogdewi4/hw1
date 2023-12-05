@@ -1,6 +1,6 @@
 import { VideoDB } from '../model';
 
-export const videos: VideoDB[] = [
+let videos: VideoDB[] = [
   {
     id: 0,
     title: 'string',
@@ -12,3 +12,36 @@ export const videos: VideoDB[] = [
     availableResolutions: ['P144'],
   },
 ];
+
+const replaceVideos = (mutatedVideos: VideoDB[]) => {
+  videos = [...mutatedVideos];
+};
+
+export const getVideos = () => {
+  return [...videos];
+};
+
+export const setVideo = (video: VideoDB) => {
+  return videos.push(video);
+};
+
+export const filterVideos = (filterFn: (item: VideoDB) => boolean) => {
+  let mutatedVideos: null | VideoDB[] = [] as VideoDB[];
+  let isMutated = false;
+
+  getVideos().forEach((video) => {
+    if (filterFn(video)) {
+      isMutated = true;
+      return;
+    }
+    Array.isArray(mutatedVideos) && mutatedVideos.push(video);
+  });
+
+  if (isMutated) {
+    replaceVideos(mutatedVideos);
+  } else {
+    mutatedVideos = null;
+  }
+
+  return isMutated;
+};
