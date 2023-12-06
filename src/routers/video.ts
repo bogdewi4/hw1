@@ -125,6 +125,12 @@ videoRouter.put(
           field: 'minAgeRestriction',
         });
       }
+      if (body?.canBeDownloaded && typeof body.canBeDownloaded !== 'boolean') {
+        error.errorMessages.push({
+          message: 'Invalid canBeDownloaded!',
+          field: 'canBeDownloaded',
+        });
+      }
     } catch (e) {
       console.log({ e });
       // DO SOMETHING WITH ERROR
