@@ -56,7 +56,7 @@ export const isValidResolutions = (resolutions: string[]) => {
 };
 
 export const isValidMinAgeRestriction = (age: any) => {
-  return age && typeof age === 'number' && (age >= 1 || age <= 18);
+  return age && typeof age === 'number' && age >= 1 && age <= 18;
 };
 export const isValidTypeOf = (
   value: any,
