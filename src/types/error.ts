@@ -4,5 +4,5 @@ type ErrorMessage = {
 };
 
 export type Error = {
-  errorMessages: ErrorMessage[];
+  errorsMessages: ErrorMessage[];
 };

@@ -39,20 +39,23 @@ videoRouter.get('/:id', (req: RequestWithParams<{ id: string }>, res) => {
 
 videoRouter.post('/', (req: RequestWithBody<CreateVideo>, res: Response) => {
   let error: Error = {
-    errorMessages: [],
+    errorsMessages: [],
   };
 
   let { title, author, availableResolutions } = req.body;
 
   try {
     if (!isValidString(title, { maxLength: 40 })) {
-      error.errorMessages.push({ message: 'Invalid title!', field: 'title' });
+      error.errorsMessages.push({ message: 'Invalid title!', field: 'title' });
     }
     if (!isValidString(author, { maxLength: 20 })) {
-      error.errorMessages.push({ message: 'Invalid author!', field: 'author' });
+      error.errorsMessages.push({
+        message: 'Invalid author!',
+        field: 'author',
+      });
     }
     if (!isValidResolutions(availableResolutions)) {
-      error.errorMessages.push({
+      error.errorsMessages.push({
         message: 'Invalid availableResolutions!',
         field: 'availableResolutions',
       });
@@ -64,7 +67,7 @@ videoRouter.post('/', (req: RequestWithBody<CreateVideo>, res: Response) => {
     // DO SOMETHING WITH ERROR
   }
 
-  if (error.errorMessages.length) {
+  if (error.errorsMessages.length) {
     res.status(400).send(error);
     return;
   }
@@ -93,23 +96,26 @@ videoRouter.put(
   '/:id',
   (req: RequestWithBody<UpdateVideo, { id: string }>, res: Response) => {
     let error: Error = {
-      errorMessages: [],
+      errorsMessages: [],
     };
 
     const body = req.body;
 
     try {
       if (!isValidString(body.title, { maxLength: 40 })) {
-        error.errorMessages.push({ message: 'Invalid title!', field: 'title' });
+        error.errorsMessages.push({
+          message: 'Invalid title!',
+          field: 'title',
+        });
       }
       if (!isValidString(body.author, { maxLength: 20 })) {
-        error.errorMessages.push({
+        error.errorsMessages.push({
           message: 'Invalid author!',
           field: 'author',
         });
       }
       if (!isValidResolutions(body.availableResolutions)) {
-        error.errorMessages.push({
+        error.errorsMessages.push({
           message: 'Invalid availableResolutions!',
           field: 'availableResolutions',
         });
@@ -120,13 +126,13 @@ videoRouter.put(
         body?.minAgeRestriction &&
         (body?.minAgeRestriction < 1 || body?.minAgeRestriction > 18)
       ) {
-        error.errorMessages.push({
+        error.errorsMessages.push({
           message: 'Invalid minAgeRestriction!',
           field: 'minAgeRestriction',
         });
       }
       if (body?.canBeDownloaded && typeof body.canBeDownloaded !== 'boolean') {
-        error.errorMessages.push({
+        error.errorsMessages.push({
           message: 'Invalid canBeDownloaded!',
           field: 'canBeDownloaded',
         });
@@ -136,7 +142,7 @@ videoRouter.put(
       // DO SOMETHING WITH ERROR
     }
 
-    if (error.errorMessages.length) {
+    if (error.errorsMessages.length) {
       res.status(400).send(error);
       return;
     }
