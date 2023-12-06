@@ -107,7 +107,8 @@ videoRouter.put('/', (req: RequestWithBody<UpdateVideo>, res: Response) => {
     }
   } catch (e) {
     console.log({ e });
-    // DO SOMETHING WITH ERROR
+    res.status(400).send(error);
+    return;
   }
 
   if (error.errorMessages.length) {
