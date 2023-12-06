@@ -55,12 +55,8 @@ export const isValidResolutions = (resolutions: string[]) => {
   return resolutions.every((resolution) => RESOLUTIONS.includes(resolution));
 };
 
-export const isValidMinAgeRestriction = (minAgeRestriction: any) => {
-  return (
-    minAgeRestriction &&
-    typeof minAgeRestriction === 'number' &&
-    (minAgeRestriction >= 1 || minAgeRestriction <= 18)
-  );
+export const isValidMinAgeRestriction = (age: any) => {
+  return age && typeof age === 'number' && (age >= 1 || age <= 18);
 };
 export const isValidTypeOf = (
   value: any,
