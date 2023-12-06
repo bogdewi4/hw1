@@ -17,7 +17,12 @@ import {
   updateVideoById,
 } from '../db';
 import { VideoDB } from '../model';
-import { isValidResolutions, isValidString } from '../utils/validation';
+import {
+  isValidMinAgeRestriction,
+  isValidResolutions,
+  isValidString,
+  isValidTypeOf,
+} from '../utils/validation';
 
 export const videoRouter = Router({});
 
@@ -119,25 +124,21 @@ videoRouter.put(
           message: 'Invalid availableResolutions!',
           field: 'availableResolutions',
         });
-
         body.availableResolutions = [];
       }
-      if (
-        body?.minAgeRestriction &&
-        (body?.minAgeRestriction < 1 || body?.minAgeRestriction > 18)
-      ) {
+      if (!isValidMinAgeRestriction(body.minAgeRestriction)) {
         error.errorsMessages.push({
           message: 'Invalid minAgeRestriction!',
           field: 'minAgeRestriction',
         });
       }
-      if (body?.canBeDownloaded && typeof body.canBeDownloaded !== 'boolean') {
+      if (!isValidTypeOf(body?.canBeDownloaded, 'boolean')) {
         error.errorsMessages.push({
           message: 'Invalid canBeDownloaded!',
           field: 'canBeDownloaded',
         });
       }
-      if (body?.publicationDate && typeof body.publicationDate !== 'string') {
+      if (!isValidTypeOf(body?.publicationDate, 'string')) {
         error.errorsMessages.push({
           message: 'Invalid publicationDate!',
           field: 'publicationDate',
