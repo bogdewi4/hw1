@@ -10,11 +10,13 @@ enum Limitaion {
 
 export const isValidString = (value: string, constraint?: Constraint) => {
   if (!value) {
-    throw new Error('Value is not existed.');
+    // throw new Error('Value is not existed.');
+    return false;
   }
 
   if (typeof value !== 'string') {
-    throw new Error('Value is not a string.');
+    // throw new Error('Value is not a string.');
+    return false;
   }
 
   if (constraint) {
@@ -25,7 +27,8 @@ export const isValidString = (value: string, constraint?: Constraint) => {
         case Limitaion.MAX_LENGTH:
           return value.trim().length <= limit;
         default:
-          throw new Error('Cannot find constraint.');
+          //   throw new Error('Cannot find constraint.');
+          return false;
       }
     });
   }
@@ -35,15 +38,18 @@ export const isValidString = (value: string, constraint?: Constraint) => {
 
 export const isValidResolutions = (resolutions: string[]) => {
   if (!resolutions) {
-    throw new Error('Resolutions is not existed.');
+    // throw new Error('Resolutions is not existed.');
+    return false;
   }
 
   if (!Array.isArray(resolutions)) {
-    throw new Error('Resolutions is not an array.');
+    // throw new Error('Resolutions is not an array.');
+    return false;
   }
 
   if (!resolutions.length) {
-    throw new Error('Resolutions cannot be empty.');
+    // throw new Error('Resolutions cannot be empty.');
+    return false;
   }
 
   return resolutions.every((resolution) => RESOLUTIONS.includes(resolution));
