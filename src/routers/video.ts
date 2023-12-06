@@ -102,7 +102,7 @@ videoRouter.put('/', (req: RequestWithBody<UpdateVideo>, res: Response) => {
         message: 'Invalid availableResolutions!',
         field: 'availableResolutions',
       });
-    } else {
+
       availableResolutions = [];
     }
   } catch (e) {
