@@ -8,7 +8,7 @@ export const app = express();
 
 app.use(json());
 app.use('/videos', videoRouter);
-app.use('/testing/all-data', testingRouter);
+app.use('/testing', testingRouter);
 
 app.listen(PORT, () => {
   console.log(`App start on port: ${PORT}`);
