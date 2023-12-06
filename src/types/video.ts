@@ -15,4 +15,8 @@ export type CreateVideo = {
   availableResolutions: typeof RESOLUTIONS;
 };
 
-export type UpdateVideo = CreateVideo;
+export type UpdateVideo = CreateVideo & {
+  canBeDownloaded?: boolean;
+  minAgeRestriction?: number;
+  publicationDate?: string;
+};

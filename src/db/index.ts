@@ -21,8 +21,29 @@ export const getVideos = () => {
   return [...videos];
 };
 
+export const getVideoById = (id: number) => {
+  return videos.find((video) => video.id === id);
+};
+
 export const setVideo = (video: VideoDB) => {
   return videos.push(video);
+};
+
+export const updateVideoById = (videoId: number, video: Partial<VideoDB>) => {
+  let isMutated = false;
+  const mutatedVideos = videos.map((v) => {
+    if (v.id === videoId) {
+      isMutated = true;
+      return { ...v, ...video };
+    }
+    return v;
+  });
+
+  if (isMutated) {
+    videos = mutatedVideos;
+  }
+
+  return isMutated;
 };
 
 export const dropVideoTable = () => {

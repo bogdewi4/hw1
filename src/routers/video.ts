@@ -9,7 +9,13 @@ import {
   type UpdateVideo,
 } from '../types';
 
-import { getVideos, setVideo, filterVideos } from '../db';
+import {
+  getVideos,
+  setVideo,
+  filterVideos,
+  getVideoById,
+  updateVideoById,
+} from '../db';
 import { VideoDB } from '../model';
 import { isValidResolutions, isValidString } from '../utils/validation';
 
@@ -83,56 +89,66 @@ videoRouter.post('/', (req: RequestWithBody<CreateVideo>, res: Response) => {
   res.status(201).send(newVideo);
 });
 
-videoRouter.put('/', (req: RequestWithBody<UpdateVideo>, res: Response) => {
-  let error: Error = {
-    errorMessages: [],
-  };
+videoRouter.put(
+  '/:id',
+  (req: RequestWithBody<UpdateVideo, { id: string }>, res: Response) => {
+    let error: Error = {
+      errorMessages: [],
+    };
 
-  let { title, author, availableResolutions } = req.body;
+    const body = req.body;
 
-  try {
-    if (!isValidString(title, { maxLength: 40 })) {
-      error.errorMessages.push({ message: 'Invalid title!', field: 'title' });
-    }
-    if (!isValidString(author, { maxLength: 20 })) {
-      error.errorMessages.push({ message: 'Invalid author!', field: 'author' });
-    }
-    if (!isValidResolutions(availableResolutions)) {
-      error.errorMessages.push({
-        message: 'Invalid availableResolutions!',
-        field: 'availableResolutions',
-      });
+    try {
+      if (!isValidString(body.title, { maxLength: 40 })) {
+        error.errorMessages.push({ message: 'Invalid title!', field: 'title' });
+      }
+      if (!isValidString(body.author, { maxLength: 20 })) {
+        error.errorMessages.push({
+          message: 'Invalid author!',
+          field: 'author',
+        });
+      }
+      if (!isValidResolutions(body.availableResolutions)) {
+        error.errorMessages.push({
+          message: 'Invalid availableResolutions!',
+          field: 'availableResolutions',
+        });
 
-      availableResolutions = [];
+        body.availableResolutions = [];
+      }
+      if (
+        body?.minAgeRestriction &&
+        (body?.minAgeRestriction < 1 || body?.minAgeRestriction > 18)
+      ) {
+        error.errorMessages.push({
+          message: 'Invalid minAgeRestriction!',
+          field: 'minAgeRestriction',
+        });
+      }
+    } catch (e) {
+      console.log({ e });
+      // DO SOMETHING WITH ERROR
     }
-  } catch (e) {
-    console.log({ e });
-    // DO SOMETHING WITH ERROR
+
+    if (error.errorMessages.length) {
+      res.status(400).send(error);
+      return;
+    }
+
+    const videoId = +req.params.id;
+
+    const createdAt = new Date();
+    const publicationDate = new Date();
+
+    publicationDate.setDate(createdAt.getDate() + 1);
+
+    const isUpdated = updateVideoById(videoId, {
+      ...body,
+    });
+
+    isUpdated ? res.sendStatus(204) : res.sendStatus(404);
   }
-
-  if (error.errorMessages.length) {
-    res.status(400).send(error);
-    return;
-  }
-
-  const createdAt = new Date();
-  const publicationDate = new Date();
-
-  publicationDate.setDate(createdAt.getDate() + 1);
-
-  const newVideo: VideoDB = {
-    id: +new Date(),
-    canBeDownloaded: false,
-    minAgeRestriction: null,
-    createdAt: createdAt.toISOString(),
-    publicationDate: publicationDate.toISOString(),
-    title,
-    author,
-    availableResolutions,
-  };
-
-  setVideo(newVideo);
-});
+);
 
 videoRouter.delete('/:id', (req: RequestWithParams<{ id: string }>, res) => {
   const videoId = +req.params.id;
