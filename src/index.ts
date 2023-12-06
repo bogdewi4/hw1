@@ -2,7 +2,7 @@ import express, { json } from 'express';
 
 import { videoRouter } from './routers';
 
-const PORT = 5000;
+const PORT = 5001;
 
 export const app = express();
 

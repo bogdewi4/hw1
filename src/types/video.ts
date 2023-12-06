@@ -14,3 +14,5 @@ export type CreateVideo = {
   author: string;
   availableResolutions: typeof RESOLUTIONS;
 };
+
+export type UpdateVideo = CreateVideo;

@@ -5,11 +5,13 @@ import {
   type Error,
   type RequestWithBody,
   type RequestWithParams,
-  CreateVideo,
+  type CreateVideo,
+  type UpdateVideo,
 } from '../types';
 
 import { getVideos, setVideo, filterVideos } from '../db';
 import { VideoDB } from '../model';
+import { isValidResolutions, isValidString } from '../utils/validation';
 
 export const videoRouter = Router({});
 
@@ -36,33 +38,24 @@ videoRouter.post('/', (req: RequestWithBody<CreateVideo>, res: Response) => {
 
   let { title, author, availableResolutions } = req.body;
 
-  if (
-    !title ||
-    typeof title !== 'string' ||
-    !title.trim() ||
-    title.trim().length > 40
-  ) {
-    error.errorMessages.push({ message: 'Invalid title!', field: 'title' });
-  }
-  if (
-    !author ||
-    typeof author !== 'string' ||
-    !author.trim() ||
-    author.trim().length > 20
-  ) {
-    error.errorMessages.push({ message: 'Invalid author!', field: 'author' });
-  }
-
-  if (availableResolutions && Array.isArray(availableResolutions)) {
-    availableResolutions.forEach((resolution) => {
-      !RESOLUTIONS.includes(resolution) &&
-        error.errorMessages.push({
-          message: 'Invalid availableResolutions!',
-          field: 'availableResolutions',
-        });
-    });
-  } else {
-    availableResolutions = [];
+  try {
+    if (!isValidString(title, { maxLength: 40 })) {
+      error.errorMessages.push({ message: 'Invalid title!', field: 'title' });
+    }
+    if (!isValidString(author, { maxLength: 20 })) {
+      error.errorMessages.push({ message: 'Invalid author!', field: 'author' });
+    }
+    if (!isValidResolutions(availableResolutions)) {
+      error.errorMessages.push({
+        message: 'Invalid availableResolutions!',
+        field: 'availableResolutions',
+      });
+    } else {
+      availableResolutions = [];
+    }
+  } catch (e) {
+    console.log({ e });
+    // DO SOMETHING WITH ERROR
   }
 
   if (error.errorMessages.length) {
@@ -88,6 +81,57 @@ videoRouter.post('/', (req: RequestWithBody<CreateVideo>, res: Response) => {
 
   setVideo(newVideo);
   res.status(201).send(newVideo);
+});
+
+videoRouter.put('/', (req: RequestWithBody<UpdateVideo>, res: Response) => {
+  let error: Error = {
+    errorMessages: [],
+  };
+
+  let { title, author, availableResolutions } = req.body;
+
+  try {
+    if (!isValidString(title, { maxLength: 40 })) {
+      error.errorMessages.push({ message: 'Invalid title!', field: 'title' });
+    }
+    if (!isValidString(author, { maxLength: 20 })) {
+      error.errorMessages.push({ message: 'Invalid author!', field: 'author' });
+    }
+    if (!isValidResolutions(availableResolutions)) {
+      error.errorMessages.push({
+        message: 'Invalid availableResolutions!',
+        field: 'availableResolutions',
+      });
+    } else {
+      availableResolutions = [];
+    }
+  } catch (e) {
+    console.log({ e });
+    // DO SOMETHING WITH ERROR
+  }
+
+  if (error.errorMessages.length) {
+    res.status(400).send(error);
+    return;
+  }
+
+  const createdAt = new Date();
+  const publicationDate = new Date();
+
+  publicationDate.setDate(createdAt.getDate() + 1);
+
+  const newVideo: VideoDB = {
+    id: +new Date(),
+    canBeDownloaded: false,
+    minAgeRestriction: null,
+    createdAt: createdAt.toISOString(),
+    publicationDate: publicationDate.toISOString(),
+    title,
+    author,
+    availableResolutions,
+  };
+
+  setVideo(newVideo);
 });
 
 videoRouter.delete('/:id', (req: RequestWithParams<{ id: string }>, res) => {
