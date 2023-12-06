@@ -137,6 +137,12 @@ videoRouter.put(
           field: 'canBeDownloaded',
         });
       }
+      if (body?.publicationDate && typeof body.publicationDate !== 'string') {
+        error.errorsMessages.push({
+          message: 'Invalid publicationDate!',
+          field: 'publicationDate',
+        });
+      }
     } catch (e) {
       console.log({ e });
       // DO SOMETHING WITH ERROR
