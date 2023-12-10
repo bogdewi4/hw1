@@ -1,6 +1,17 @@
 import { VideoDB } from '../model';
 
-let videos: VideoDB[] = [];
+let videos: VideoDB[] = [
+  {
+    id: 1,
+    title: 'title',
+    availableResolutions: ['P144'],
+    author: 'author',
+    canBeDownloaded: false,
+    createdAt: new Date().toISOString(),
+    minAgeRestriction: 10,
+    publicationDate: new Date().toISOString(),
+  },
+];
 
 const replaceVideos = (mutatedVideos: VideoDB[]) => {
   videos = [...mutatedVideos];

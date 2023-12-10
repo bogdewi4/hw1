@@ -1,14 +1,7 @@
-import express, { json } from 'express';
+import { app } from './server';
+import 'dotenv/config';
 
-import { testingRouter, videoRouter } from './routers';
-
-const PORT = 5001;
-
-export const app = express();
-
-app.use(json());
-app.use('/videos', videoRouter);
-app.use('/testing', testingRouter);
+const PORT = process.env.PORT || 5002;
 
 app.listen(PORT, () => {
   console.log(`App start on port: ${PORT}`);
