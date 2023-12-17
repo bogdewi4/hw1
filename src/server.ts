@@ -1,9 +1,8 @@
 import express, { json } from 'express';
 
-import { testingRouter, videoRouter } from './routers';
+import { blogRoute } from './routes';
 
 export const app = express();
 
 app.use(json());
-app.use('/videos', videoRouter);
-app.use('/testing', testingRouter);
+app.use('/blogs', blogRoute);
