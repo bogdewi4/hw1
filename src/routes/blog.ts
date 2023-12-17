@@ -51,7 +51,6 @@ blogRoute.put(
 blogRoute.delete(
   '/:id',
   authMiddleware,
-  blogValidation(),
   (req: RequestWithParams<{ id: string }>, res: Response) => {
     const { id } = req.params;
     const isDeleted = BlogRepository.deleteBlog(id);
