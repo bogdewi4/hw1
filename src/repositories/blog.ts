@@ -12,12 +12,10 @@ export class BlogRepository {
   static getBlogById(id: string) {
     return this.blogs.find((blog) => blog.id === id);
   }
-  static createBlog({ name, description, websiteUrl }: CreateBlogModel) {
+  static createBlog(blog: CreateBlogModel) {
     const newBlog: BlogModel = {
       id: new Date().getTime().toString(),
-      name,
-      description,
-      websiteUrl,
+      ...blog,
     };
 
     this.blogs.push(newBlog);

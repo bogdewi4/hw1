@@ -12,28 +12,24 @@ export class PostRepository {
   static getPostById(id: string) {
     return this.posts.find((post) => post.id === id);
   }
-  static createPost({}: CreatePostModel) {
+  static createPost(post: CreatePostModel & { blogName: string }) {
     const newPost: PostModel = {
       id: new Date().getTime().toString(),
-      blogId: '',
-      blogName: '',
-      content: '',
-      shortDescription: '',
-      title: '',
+      ...post,
     };
 
     this.posts.push(newPost);
     return newPost;
   }
 
-  static updatePost(post: UpdatePostModel & { id: string }) {
-    let blogEntity = this.posts.find(({ id }) => id === post.id);
+  static updatePost(post: UpdatePostModel & { id: string; blogName: string }) {
+    let postEntity = this.posts.find(({ id }) => id === post.id);
 
-    if (blogEntity) {
-      // blogEntity.name = post.name;
+    if (postEntity) {
+      Object.assign(postEntity, { ...post });
     }
 
-    return !!blogEntity;
+    return !!postEntity;
   }
 
   static deletePost(id: string) {
