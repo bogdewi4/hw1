@@ -19,12 +19,7 @@ postRoute.get(
   (req: RequestWithParams<{ id: string }>, res: Response) => {
     const { id } = req.params;
     const post = PostRepository.getPostById(id);
-
-    if (!post) {
-      res.sendStatus(404);
-    }
-
-    res.send(post);
+    !post ? res.sendStatus(404) : res.send(post);
   }
 );
 

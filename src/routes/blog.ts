@@ -17,12 +17,7 @@ blogRoute.get(
   (req: RequestWithParams<{ id: string }>, res: Response) => {
     const { id } = req.params;
     const blog = BlogRepository.getBlogById(id);
-
-    if (!blog) {
-      res.sendStatus(404);
-    }
-
-    res.send(blog);
+    !blog ? res.sendStatus(404) : res.send(blog);
   }
 );
 
