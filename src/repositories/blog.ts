@@ -25,10 +25,15 @@ class BlogRepository {
   }
 
   async createBlog(createdData: CreateBlogModel): Promise<BlogModel> {
-    const post = await this.db.insertOne(createdData);
+    const data: Omit<BlogModel, 'id'> = {
+      ...createdData,
+      isMembership: false,
+      createdAt: new Date().toISOString(),
+    };
+    const post = await this.db.insertOne(data);
 
     return {
-      ...createdData,
+      ...data,
       id: post.insertedId.toString(),
     };
   }

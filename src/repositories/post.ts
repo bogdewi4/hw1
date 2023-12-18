@@ -28,10 +28,14 @@ class PostRepository {
   async createPost(
     createdData: CreatePostModel & { blogName: string }
   ): Promise<PostModel> {
-    const post = await this.db.insertOne(createdData);
+    const data: Omit<PostModel, 'id'> = {
+      ...createdData,
+      createdAt: new Date().toISOString(),
+    };
+    const post = await this.db.insertOne(data);
 
     return {
-      ...createdData,
+      ...data,
       id: post.insertedId.toString(),
     };
   }
