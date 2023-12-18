@@ -1,22 +1,29 @@
 import { Request, Response, Router } from 'express';
-import { BlogRepository } from '../repositories';
+import { blogRepository } from '../repositories';
 import { RequestWithBody, RequestWithParams } from '../types';
 import { authMiddleware } from '../middlewares/auth';
 import { blogValidation } from '../validators/blog';
 import { CreateBlogModel } from '../models/blogs';
+import { ObjectId } from 'mongodb';
 
 export const blogRoute = Router();
 
-blogRoute.get('/', (req: Request, res: Response) => {
-  const blogs = BlogRepository.getAllBlogs();
+blogRoute.get('/', async (req: Request, res: Response) => {
+  const blogs = await blogRepository.getAllBlogs();
   res.send(blogs);
 });
 
 blogRoute.get(
   '/:id',
-  (req: RequestWithParams<{ id: string }>, res: Response) => {
+  async (req: RequestWithParams<{ id: string }>, res: Response) => {
     const { id } = req.params;
-    const blog = BlogRepository.getBlogById(id);
+
+    if (!ObjectId.isValid(id)) {
+      res.sendStatus(400);
+      return;
+    }
+
+    const blog = await blogRepository.getBlogById(id);
     !blog ? res.sendStatus(404) : res.send(blog);
   }
 );
@@ -25,9 +32,9 @@ blogRoute.post(
   '/',
   authMiddleware,
   blogValidation(),
-  (req: RequestWithBody<CreateBlogModel>, res: Response) => {
+  async (req: RequestWithBody<CreateBlogModel>, res: Response) => {
     const blog = req.body;
-    res.status(201).send(BlogRepository.createBlog(blog));
+    res.status(201).send(await blogRepository.createBlog(blog));
   }
 );
 
@@ -35,10 +42,18 @@ blogRoute.put(
   '/:id',
   authMiddleware,
   blogValidation(),
-  (req: RequestWithBody<CreateBlogModel, { id: string }>, res: Response) => {
+  async (
+    req: RequestWithBody<CreateBlogModel, { id: string }>,
+    res: Response
+  ) => {
     const { id } = req.params;
+    if (!ObjectId.isValid(id)) {
+      res.sendStatus(400);
+      return;
+    }
+
     const blog = req.body;
-    const isUpdated = BlogRepository.updateBlog({ ...blog, id });
+    const isUpdated = await blogRepository.updateBlog({ ...blog, id });
     isUpdated ? res.sendStatus(204) : res.sendStatus(404);
   }
 );
@@ -46,9 +61,14 @@ blogRoute.put(
 blogRoute.delete(
   '/:id',
   authMiddleware,
-  (req: RequestWithParams<{ id: string }>, res: Response) => {
+  async (req: RequestWithParams<{ id: string }>, res: Response) => {
     const { id } = req.params;
-    const isDeleted = BlogRepository.deleteBlog(id);
+    if (!ObjectId.isValid(id)) {
+      res.sendStatus(400);
+      return;
+    }
+
+    const isDeleted = await blogRepository.deleteBlog(id);
     isDeleted ? res.sendStatus(204) : res.sendStatus(404);
   }
 );

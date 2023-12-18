@@ -1,46 +1,60 @@
-import { db } from '../db';
+import { Collection, ObjectId } from 'mongodb';
+import { client } from '../db';
+import { BlogDB } from '../models/db';
+import { blogMapper } from '../models/blogs/mappers';
 import { BlogModel, CreateBlogModel, UpdateBlogModel } from '../models/blogs';
 
-export class BlogRepository {
-  static get blogs() {
-    return db.blogs;
+class BlogRepository {
+  constructor(private db: Collection<BlogDB>) {
+    this.db = db;
   }
 
-  static getAllBlogs() {
-    return this.blogs;
+  async getAllBlogs(): Promise<BlogModel[]> {
+    const posts = await this.db.find({}).toArray();
+    return posts.map(blogMapper);
   }
-  static getBlogById(id: string) {
-    return this.blogs.find((blog) => blog.id === id);
+
+  async getBlogById(id: string): Promise<BlogModel | null> {
+    const post = await this.db.findOne({ _id: new ObjectId(id) });
+
+    if (!post) {
+      return null;
+    }
+
+    return blogMapper(post);
   }
-  static createBlog(blog: CreateBlogModel) {
-    const newBlog: BlogModel = {
-      id: new Date().getTime().toString(),
-      ...blog,
+
+  async createBlog(createdData: CreateBlogModel): Promise<BlogModel> {
+    const post = await this.db.insertOne(createdData);
+
+    return {
+      ...createdData,
+      id: post.insertedId.toString(),
     };
-
-    this.blogs.push(newBlog);
-    return newBlog;
   }
 
-  static updateBlog(blog: UpdateBlogModel & { id: string }) {
-    let blogEntity = this.blogs.find(({ id }) => id === blog.id);
-
-    if (blogEntity) {
-      Object.assign(blogEntity, { ...blog });
-    }
-
-    return !!blogEntity;
-  }
-
-  static deleteBlog(id: string) {
-    for (let i = 0; i < this.blogs.length; i++) {
-      const blog = this.blogs[i];
-      if (blog.id === id) {
-        this.blogs.splice(i, 1);
-        return true;
+  async updateBlog(
+    updatedPost: UpdateBlogModel & { id: string }
+  ): Promise<boolean> {
+    const post = await this.db.updateOne(
+      { _id: new ObjectId(updatedPost.id) },
+      {
+        $set: {
+          ...updatedPost,
+        },
       }
-    }
+    );
 
-    return false;
+    return !!post.matchedCount;
+  }
+
+  async deleteBlog(id: string): Promise<boolean> {
+    const post = await this.db.deleteOne({ _id: new ObjectId(id) });
+
+    return !!post.deletedCount;
   }
 }
+
+export const blogRepository = new BlogRepository(
+  client.db().collection<BlogDB>('blog')
+);

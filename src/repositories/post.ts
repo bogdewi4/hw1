@@ -1,46 +1,63 @@
-import { db } from '../db';
-import { PostModel, CreatePostModel, UpdatePostModel } from '../models/posts';
+import { Collection, ObjectId } from 'mongodb';
+import { client } from '../db';
 
-export class PostRepository {
-  static get posts() {
-    return db.posts;
+import { CreatePostModel, PostModel, UpdatePostModel } from '../models/posts';
+import { postMapper } from '../models/posts/mappers';
+import { PostDB } from '../models/db';
+
+class PostRepository {
+  constructor(private db: Collection<PostDB>) {
+    this.db = db;
   }
 
-  static getAllPosts() {
-    return this.posts;
+  async getAllPosts(): Promise<PostModel[]> {
+    const posts = await this.db.find({}).toArray();
+    return posts.map(postMapper);
   }
-  static getPostById(id: string) {
-    return this.posts.find((post) => post.id === id);
+
+  async getPostById(id: string): Promise<PostModel | null> {
+    const post = await this.db.findOne({ _id: new ObjectId(id) });
+
+    if (!post) {
+      return null;
+    }
+
+    return postMapper(post);
   }
-  static createPost(post: CreatePostModel & { blogName: string }) {
-    const newPost: PostModel = {
-      id: new Date().getTime().toString(),
-      ...post,
+
+  async createPost(
+    createdData: CreatePostModel & { blogName: string }
+  ): Promise<PostModel> {
+    const post = await this.db.insertOne(createdData);
+
+    return {
+      ...createdData,
+      id: post.insertedId.toString(),
     };
-
-    this.posts.push(newPost);
-    return newPost;
   }
 
-  static updatePost(post: UpdatePostModel & { id: string; blogName: string }) {
-    let postEntity = this.posts.find(({ id }) => id === post.id);
-
-    if (postEntity) {
-      Object.assign(postEntity, { ...post });
-    }
-
-    return !!postEntity;
-  }
-
-  static deletePost(id: string) {
-    for (let i = 0; i < this.posts.length; i++) {
-      const post = this.posts[i];
-      if (post.id === id) {
-        this.posts.splice(i, 1);
-        return true;
+  async updatePost(
+    updatedPost: UpdatePostModel & { id: string; blogName: string }
+  ): Promise<boolean> {
+    const post = await this.db.updateOne(
+      { _id: new ObjectId(updatedPost.id) },
+      {
+        $set: {
+          ...updatedPost,
+        },
       }
-    }
+    );
 
-    return false;
+    return !!post.matchedCount;
+  }
+
+  async deletePost(id: string): Promise<boolean> {
+    const post = await this.db.deleteOne({ _id: new ObjectId(id) });
+
+    return !!post.deletedCount;
   }
 }
+
+export const postRepository = new PostRepository(
+  client.db().collection<PostDB>('post')
+);
