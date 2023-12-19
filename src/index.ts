@@ -12,7 +12,6 @@ const PORT = process.env.PORT || 5002;
 
 const bootstrap = async () => {
   await runDb();
-
   app.listen(PORT, () => {
     console.log(`App start on port: ${PORT}`);
   });
