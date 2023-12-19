@@ -29,7 +29,11 @@ class PostRepository {
     createdData: CreatePostModel & { blogName: string }
   ): Promise<PostModel> {
     const data: Omit<PostModel, 'id'> = {
-      ...createdData,
+      title: createdData.title,
+      shortDescription: createdData.shortDescription,
+      content: createdData.content,
+      blogId: createdData.blogId,
+      blogName: createdData.blogName,
       createdAt: new Date().toISOString(),
     };
     const post = await this.db.insertOne(data);

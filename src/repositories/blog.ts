@@ -26,7 +26,9 @@ class BlogRepository {
 
   async createBlog(createdData: CreateBlogModel): Promise<BlogModel> {
     const data: Omit<BlogModel, 'id'> = {
-      ...createdData,
+      name: createdData.name,
+      description: createdData.description,
+      websiteUrl: createdData.websiteUrl,
       isMembership: false,
       createdAt: new Date().toISOString(),
     };
