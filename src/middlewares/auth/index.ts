@@ -30,6 +30,11 @@ export const authMiddleware = (
 
   const [login, password] = decodedData.split(':');
 
+  console.log(' ');
+  console.log(' ');
+  console.log(' ');
+  console.log('authMiddleware: ', { ...process.env });
+
   if (login !== process.env.AUTH_LOGIN || password !== process.env.AUTH_PASS) {
     res.sendStatus(401);
     return;

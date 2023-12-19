@@ -12,7 +12,15 @@ const uri = process.env.MONGO_URI;
 if (!uri) {
   throw new Error('Must be assigned MONGO_URI variable');
 }
- 
+
+console.log(' ');
+console.log(' ');
+console.log(' ');
+console.log('DATABASE: ', { ...process.env });
+console.log(' ');
+console.log({ uri });
+console.log(' ');
+
 export const client = new MongoClient(uri);
 
 export const runDb = async () => {
