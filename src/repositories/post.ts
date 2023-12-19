@@ -1,9 +1,9 @@
-import { Collection, ObjectId } from 'mongodb';
+import {type  Collection, ObjectId } from 'mongodb';
 import { client } from '../db';
 
-import { CreatePostModel, PostModel, UpdatePostModel } from '../models/posts';
 import { postMapper } from '../models/posts/mappers';
-import { PostDB } from '../models/db';
+import type { CreatePostModel, PostModel, UpdatePostModel } from '../models/posts';
+import type { PostDB } from '../models/db';
 
 class PostRepository {
   constructor(private db: Collection<PostDB>) {

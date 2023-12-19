@@ -1,10 +1,18 @@
+const path = require('path');
+
+import dotenv from 'dotenv';
 import { MongoClient } from 'mongodb';
-import type { BlogDB, PostDB } from '../models/db';
-import 'dotenv/config';
-console.log('ENV', process.env.MONGO_URI);
 
-const uri = process.env.MONGO_URI || 'mongodb://localhost:27017';
+dotenv.config({
+  path: path.join(__dirname, `../../.env.${process.env.NODE_ENV}`),
+});
 
+const uri = process.env.MONGO_URI;
+
+if (!uri) {
+  throw new Error('Must be assigned MONGO_URI variable');
+}
+ 
 export const client = new MongoClient(uri);
 
 export const runDb = async () => {

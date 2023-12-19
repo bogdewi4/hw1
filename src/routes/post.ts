@@ -1,10 +1,11 @@
-import { Request, Response, Router } from 'express';
+import { Router } from 'express';
+import type { Request, Response } from 'express';
 
-import { RequestWithBody, RequestWithParams } from '../types';
+import type { RequestWithBody, RequestWithParams } from '../types';
 import { authMiddleware } from '../middlewares/auth';
 
 import { blogRepository, postRepository } from '../repositories';
-import { CreatePostModel, UpdatePostModel } from '../models/posts';
+import type { CreatePostModel, UpdatePostModel } from '../models/posts';
 import { postValidation } from '../validators/post';
 import { ObjectId } from 'mongodb';
 

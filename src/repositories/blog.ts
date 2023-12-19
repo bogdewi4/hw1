@@ -1,8 +1,14 @@
-import { Collection, ObjectId } from 'mongodb';
+import { ObjectId } from 'mongodb';
 import { client } from '../db';
-import { BlogDB } from '../models/db';
 import { blogMapper } from '../models/blogs/mappers';
-import { BlogModel, CreateBlogModel, UpdateBlogModel } from '../models/blogs';
+
+import type { Collection } from 'mongodb';
+import type { BlogDB } from '../models/db';
+import type {
+  BlogModel,
+  CreateBlogModel,
+  UpdateBlogModel,
+} from '../models/blogs';
 
 class BlogRepository {
   constructor(private db: Collection<BlogDB>) {

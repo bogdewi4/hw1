@@ -2,10 +2,8 @@ import 'dotenv/config';
 import request from 'supertest';
 
 import { app } from '../src/server';
-import type { VideoDB } from '../src/model';
 
-// const dbName = 'back';
-// const mongoURI = process.env.mongoURI || `mongodb://0.0.0.0:27017/${dbName}`;
+type VideoDB = any;
 
 describe('/videos', () => {
   let newVideo: Partial<VideoDB> | null = {

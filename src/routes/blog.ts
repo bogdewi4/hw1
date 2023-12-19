@@ -1,9 +1,10 @@
-import { Request, Response, Router } from 'express';
+import { Router } from 'express';
+import type { Request, Response } from 'express';
 import { blogRepository } from '../repositories';
-import { RequestWithBody, RequestWithParams } from '../types';
+import type { RequestWithBody, RequestWithParams } from '../types';
 import { authMiddleware } from '../middlewares/auth';
 import { blogValidation } from '../validators/blog';
-import { CreateBlogModel } from '../models/blogs';
+import type { CreateBlogModel } from '../models/blogs';
 import { ObjectId } from 'mongodb';
 
 export const blogRoute = Router();
