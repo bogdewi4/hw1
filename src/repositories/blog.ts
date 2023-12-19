@@ -32,7 +32,7 @@ class BlogRepository {
       isMembership: false,
       createdAt: new Date().toISOString(),
     };
-    const post = await this.db.insertOne(data);
+    const post = await this.db.insertOne({ ...data });
 
     return {
       ...data,

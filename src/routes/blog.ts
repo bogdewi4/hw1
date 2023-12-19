@@ -34,7 +34,8 @@ blogRoute.post(
   blogValidation(),
   async (req: RequestWithBody<CreateBlogModel>, res: Response) => {
     const blog = req.body;
-    res.status(201).send(await blogRepository.createBlog(blog));
+    const createdBlog = await blogRepository.createBlog(blog);
+    res.status(201).send(createdBlog);
   }
 );
 
