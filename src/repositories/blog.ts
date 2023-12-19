@@ -45,7 +45,9 @@ class BlogRepository {
       { _id: new ObjectId(updatedPost.id) },
       {
         $set: {
-          ...updatedPost,
+          name: updatedPost.name,
+          description: updatedPost.description,
+          websiteUrl: updatedPost.websiteUrl,
         },
       }
     );
