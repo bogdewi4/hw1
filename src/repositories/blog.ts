@@ -1,48 +1,22 @@
 import { ObjectId } from 'mongodb';
-import { client } from '../db';
-import { blogMapper } from '../models/blogs/mappers';
-
 import type { Collection } from 'mongodb';
-import type { BlogDB } from '../models/db';
-import type {
-  BlogModel,
-  CreateBlogModel,
-  UpdateBlogModel,
-} from '../models/blogs';
+
+import { client } from '@/db';
+
+import type { BlogDB } from '@/models/db';
+import type { BlogModel, UpdateBlogModel } from '@/models/blogs';
 
 class BlogRepository {
   constructor(private db: Collection<BlogDB>) {
     this.db = db;
   }
 
-  async getAllBlogs(): Promise<BlogModel[]> {
-    const posts = await this.db.find({}).toArray();
-    return posts.map(blogMapper);
-  }
-
-  async getBlogById(id: string): Promise<BlogModel | null> {
-    const post = await this.db.findOne({ _id: new ObjectId(id) });
-
-    if (!post) {
-      return null;
-    }
-
-    return blogMapper(post);
-  }
-
-  async createBlog(createdData: CreateBlogModel): Promise<BlogModel> {
-    const data: Omit<BlogModel, 'id'> = {
-      name: createdData.name,
-      description: createdData.description,
-      websiteUrl: createdData.websiteUrl,
-      isMembership: false,
-      createdAt: new Date().toISOString(),
-    };
-    const post = await this.db.insertOne({ ...data });
+  async createBlog(blog: Omit<BlogModel, 'id'>): Promise<BlogModel> {
+    const post = await this.db.insertOne({ ...blog });
 
     return {
-      ...data,
-      id: post.insertedId.toString(),
+      ...blog,
+     id: post.insertedId.toString(),
     };
   }
 
@@ -65,7 +39,6 @@ class BlogRepository {
 
   async deleteBlog(id: string): Promise<boolean> {
     const post = await this.db.deleteOne({ _id: new ObjectId(id) });
-
     return !!post.deletedCount;
   }
 }

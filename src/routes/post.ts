@@ -1,20 +1,41 @@
 import { Router } from 'express';
-import type { Request, Response } from 'express';
-
-import type { RequestWithBody, RequestWithParams } from '../types';
-import { authMiddleware } from '../middlewares/auth';
-
-import { blogRepository, postRepository } from '../repositories';
-import type { CreatePostModel, UpdatePostModel } from '../models/posts';
-import { postValidation } from '../validators/post';
 import { ObjectId } from 'mongodb';
+import { HttpStatusCode } from 'axios';
+import type { Response } from 'express';
+
+import type {
+  RequestWithBody,
+  RequestWithParams,
+  RequestWithQuery,
+} from '@/types';
+import { authMiddleware } from '@/middlewares/auth';
+import {
+  blogRepository as blogQueryRepository,
+  postRepository as postQueryRepository,
+} from '@/query-repositories';
+import type {
+  CreatePostModel,
+  QueryPostInputModel,
+  UpdatePostModel,
+} from '@/models/posts';
+import { postValidation } from '@/validators/post';
+import { postService } from '@/domain';
 
 export const postRoute = Router();
 
-postRoute.get('/', async (req: Request, res: Response) => {
-  const posts = await postRepository.getAllPosts();
-  res.send(posts);
-});
+postRoute.get(
+  '/',
+  async (req: RequestWithQuery<QueryPostInputModel>, res: Response) => {
+    const sortData = {
+      sortBy: req.query.sortBy,
+      sortDirection: req.query.sortDirection,
+      pageNumber: req.query.pageNumber,
+      pageSize: req.query.pageSize,
+    };
+    const posts = await postQueryRepository.getAllPosts(sortData);
+    res.send(posts);
+  }
+);
 
 postRoute.get(
   '/:id',
@@ -25,7 +46,7 @@ postRoute.get(
       return;
     }
 
-    const post = await postRepository.getPostById(id);
+    const post = await postQueryRepository.getPostById(id);
     !post ? res.sendStatus(404) : res.send(post);
   }
 );
@@ -36,11 +57,25 @@ postRoute.post(
   postValidation(),
   async (req: RequestWithBody<CreatePostModel>, res: Response) => {
     const post = req.body;
-    const blog = await blogRepository.getBlogById(post.blogId);
-    const newPost = await postRepository.createPost({
+    const blog = await blogQueryRepository.getBlogById(post.blogId);
+
+    if (!blog) {
+      res.sendStatus(HttpStatusCode.NotFound);
+      return;
+    }
+
+    const createPostId = await postService.createPost({
       ...post,
       blogName: blog!.name,
     });
+
+    const newPost = await postQueryRepository.getPostById(createPostId);
+
+    if (!newPost) {
+      res.sendStatus(HttpStatusCode.NotFound);
+      return;
+    }
+
     res.status(201).send(newPost);
   }
 );
@@ -60,12 +95,13 @@ postRoute.put(
       return;
     }
 
-    const blog = await blogRepository.getBlogById(post.blogId);
-    const isUpdated = await postRepository.updatePost({
+    const blog = await blogQueryRepository.getBlogById(post.blogId);
+
+    const isUpdated = await postService.updatePost(id, {
       ...post,
-      id,
       blogName: blog!.name,
     });
+
     isUpdated ? res.sendStatus(204) : res.sendStatus(404);
   }
 );
@@ -80,7 +116,7 @@ postRoute.delete(
       return;
     }
 
-    const isDeleted = await postRepository.deletePost(id);
+    const isDeleted = await postService.deletePost(id);
     isDeleted ? res.sendStatus(204) : res.sendStatus(404);
   }
 );

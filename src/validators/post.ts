@@ -1,6 +1,8 @@
 import { body } from 'express-validator';
-import { inputValidation } from '../middlewares/input-model';
-import { blogRepository } from '../repositories';
+
+import { inputValidation } from '@/middlewares/input-model';
+
+import { blogRepository } from '@/query-repositories';
 
 export const titleValidation = body('title')
   .isString()
@@ -34,10 +36,14 @@ export const blogIdValidation = body('blogId')
   })
   .withMessage('Incorrect blogId!');
 
-export const postValidation = () => [
+export const basePostValidations = () => [
   titleValidation,
   shortDescriptionValidation,
   contentValidation,
+];
+
+export const postValidation = () => [
+  ...basePostValidations(),
   blogIdValidation,
   inputValidation,
 ];

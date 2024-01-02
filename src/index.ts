@@ -1,7 +1,7 @@
 const path = require('path');
 
 import dotenv from 'dotenv';
-import { runDb } from './db';
+import { runDb } from '@/db';
 import { app } from './server';
 
 dotenv.config({

@@ -1,41 +1,22 @@
-import {type  Collection, ObjectId } from 'mongodb';
+import { type Collection, ObjectId } from 'mongodb';
 import { client } from '../db';
 
 import { postMapper } from '../models/posts/mappers';
-import type { CreatePostModel, PostModel, UpdatePostModel } from '../models/posts';
+import type {
+  CreatePostModel,
+  PostModel,
+  UpdatePostModel,
+} from '../models/posts';
 import type { PostDB } from '../models/db';
+import { QueryPostByBlogIdInputModel } from '@/models/blogs';
+import { DataWithPagination, SortDir } from '@/types';
 
 class PostRepository {
   constructor(private db: Collection<PostDB>) {
     this.db = db;
   }
 
-  async getAllPosts(): Promise<PostModel[]> {
-    const posts = await this.db.find({}).toArray();
-    return posts.map(postMapper);
-  }
-
-  async getPostById(id: string): Promise<PostModel | null> {
-    const post = await this.db.findOne({ _id: new ObjectId(id) });
-
-    if (!post) {
-      return null;
-    }
-
-    return postMapper(post);
-  }
-
-  async createPost(
-    createdData: CreatePostModel & { blogName: string }
-  ): Promise<PostModel> {
-    const data: Omit<PostModel, 'id'> = {
-      title: createdData.title,
-      shortDescription: createdData.shortDescription,
-      content: createdData.content,
-      blogId: createdData.blogId,
-      blogName: createdData.blogName,
-      createdAt: new Date().toISOString(),
-    };
+  async createPost(data: Omit<PostModel, 'id'>): Promise<PostModel> {
     const post = await this.db.insertOne({ ...data });
 
     return {
