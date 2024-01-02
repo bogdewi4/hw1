@@ -42,12 +42,12 @@ postRoute.get(
   async (req: RequestWithParams<{ id: string }>, res: Response) => {
     const { id } = req.params;
     if (!ObjectId.isValid(id)) {
-      res.sendStatus(400);
+      res.sendStatus(HttpStatusCode.BadRequest);
       return;
     }
 
     const post = await postQueryRepository.getPostById(id);
-    !post ? res.sendStatus(404) : res.send(post);
+    !post ? res.sendStatus(HttpStatusCode.NotFound) : res.send(post);
   }
 );
 
@@ -76,7 +76,7 @@ postRoute.post(
       return;
     }
 
-    res.status(201).send(newPost);
+    res.status(HttpStatusCode.Created).send(newPost);
   }
 );
 
@@ -91,7 +91,7 @@ postRoute.put(
     const { id } = req.params;
     const payload = req.body;
     if (!ObjectId.isValid(id)) {
-      res.sendStatus(400);
+      res.sendStatus(HttpStatusCode.BadRequest);
       return;
     }
 
@@ -129,7 +129,7 @@ postRoute.delete(
   async (req: RequestWithParams<{ id: string }>, res: Response) => {
     const { id } = req.params;
     if (!ObjectId.isValid(id)) {
-      res.sendStatus(400);
+      res.sendStatus(HttpStatusCode.BadRequest);
       return;
     }
 
