@@ -8,8 +8,8 @@ import type {
   UpdatePostModel,
 } from '../models/posts';
 import type { PostDB } from '../models/db';
-import { QueryPostByBlogIdInputModel } from '@/models/blogs';
-import { DataWithPagination, SortDir } from '@/types';
+import { QueryPostByBlogIdInputModel } from '../models/blogs';
+import { DataWithPagination, SortDir } from '../types';
 
 class PostRepository {
   constructor(private db: Collection<PostDB>) {

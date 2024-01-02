@@ -7,19 +7,19 @@ import type {
   RequestWithBody,
   RequestWithParams,
   RequestWithQuery,
-} from '@/types';
-import { authMiddleware } from '@/middlewares/auth';
+} from '../types';
+import { authMiddleware } from '../middlewares/auth';
 import {
   blogRepository as blogQueryRepository,
   postRepository as postQueryRepository,
-} from '@/query-repositories';
+} from '../query-repositories';
 import type {
   CreatePostModel,
   QueryPostInputModel,
   UpdatePostModel,
-} from '@/models/posts';
-import { postValidation } from '@/validators/post';
-import { postService } from '@/domain';
+} from '../models/posts';
+import { postValidation } from '../validators/post';
+import { postService } from '../domain';
 
 export const postRoute = Router();
 

@@ -5,23 +5,23 @@ import { HttpStatusCode } from 'axios';
 import {
   blogRepository as blogQueryRepository,
   postRepository as postQueryRepository,
-} from '@/query-repositories';
+} from '../query-repositories';
 import {
   type RequestWithBody,
   type RequestWithParams,
   type RequestWithParamsAndQuery,
   type RequestWithQuery,
-} from '@/types';
-import { authMiddleware } from '@/middlewares/auth';
-import { blogPostValidation, blogValidation } from '@/validators/blog';
+} from '../types';
+import { authMiddleware } from '../middlewares/auth';
+import { blogPostValidation, blogValidation } from '../validators/blog';
 import type {
   CreateBlogModel,
   CreatePostBlogModel,
   QueryBlogInputModel,
   QueryPostByBlogIdInputModel,
-} from '@/models/blogs';
+} from '../models/blogs';
 import { ObjectId } from 'mongodb';
-import { blogService } from '@/domain';
+import { blogService } from '../domain';
 export const blogRoute = Router();
 
 blogRoute.get(

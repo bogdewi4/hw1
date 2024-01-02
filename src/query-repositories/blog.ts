@@ -1,17 +1,17 @@
 import { ObjectId } from 'mongodb';
 import type { Collection } from 'mongodb';
 
-import { client } from '@/db';
+import { client } from '../db';
 
-import { blogMapper } from '@/models/blogs/mappers';
-import type { BlogDB, PostDB } from '@/models/db';
+import { blogMapper } from '../models/blogs/mappers';
+import type { BlogDB, PostDB } from '../models/db';
 import type {
   BlogModel,
   QueryBlogInputModel,
   QueryPostByBlogIdInputModel,
-} from '@/models/blogs';
-import { DataWithPagination, SortDir } from '@/types';
-import { postMapper } from '@/models/posts/mappers';
+} from '../models/blogs';
+import { DataWithPagination, SortDir } from '../types';
+import { postMapper } from '../models/posts/mappers';
 
 class BlogRepository {
   constructor(

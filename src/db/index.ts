@@ -3,7 +3,7 @@ const path = require('path');
 import dotenv from 'dotenv';
 import { MongoClient } from 'mongodb';
 
-import { BlogDB, PostDB } from '@/models/db';
+import type { BlogDB, PostDB } from '../models/db';
 
 dotenv.config({
   path: path.join(__dirname, `../../.env.${process.env.NODE_ENV}`),

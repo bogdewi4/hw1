@@ -1,6 +1,6 @@
 import { body } from 'express-validator';
 
-import { inputValidation } from '@/middlewares/input-model';
+import { inputValidation } from '../middlewares/input-model';
 
 import { basePostValidations } from './post';
 

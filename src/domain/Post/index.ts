@@ -1,9 +1,5 @@
-import type {
-  CreatePostModel,
-  PostModel,
-  UpdatePostModel,
-} from '@/models/posts';
-import { postRepository } from '@/repositories';
+import type { CreatePostModel, UpdatePostModel } from '../../models/posts';
+import { postRepository } from '../../repositories';
 
 class PostService {
   async createPost(createdData: CreatePostModel & { blogName: string }) {
@@ -15,7 +11,7 @@ class PostService {
       blogName: createdData.blogName,
       createdAt: new Date().toISOString(),
     };
-    
+
     const createdPost = await postRepository.createPost({ ...data });
     return createdPost.id;
   }

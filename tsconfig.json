@@ -9,11 +9,6 @@
     "allowSyntheticDefaultImports": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "paths": {
-      "@/*": [
-        "./src/*"
-      ],
-    }
   },
   "include": [
     "src/**/*",

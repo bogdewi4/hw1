@@ -1,10 +1,10 @@
 import { ObjectId } from 'mongodb';
 import type { Collection } from 'mongodb';
 
-import { client } from '@/db';
+import { client } from '../db';
 
-import type { BlogDB } from '@/models/db';
-import type { BlogModel, UpdateBlogModel } from '@/models/blogs';
+import type { BlogDB } from '../models/db';
+import type { BlogModel, UpdateBlogModel } from '../models/blogs';
 
 class BlogRepository {
   constructor(private db: Collection<BlogDB>) {
@@ -16,7 +16,7 @@ class BlogRepository {
 
     return {
       ...blog,
-     id: post.insertedId.toString(),
+      id: post.insertedId.toString(),
     };
   }
 

@@ -1,4 +1,4 @@
-import { SortDirection } from '@/types';
+import { SortDirection } from '../../types';
 
 type BaseBlogModel = { name: string; description: string; websiteUrl: string };
 

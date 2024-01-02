@@ -1,15 +1,8 @@
 import { type Collection, ObjectId } from 'mongodb';
 import { client } from '../db';
 
-import { postMapper } from '../models/posts/mappers';
-import type {
-  CreatePostModel,
-  PostModel,
-  UpdatePostModel,
-} from '../models/posts';
+import type { PostModel, UpdatePostModel } from '../models/posts';
 import type { PostDB } from '../models/db';
-import { QueryPostByBlogIdInputModel } from '@/models/blogs';
-import { DataWithPagination, SortDir } from '@/types';
 
 class PostRepository {
   constructor(private db: Collection<PostDB>) {

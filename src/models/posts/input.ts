@@ -1,4 +1,4 @@
-import type { SortDirection } from '@/types';
+import { SortDirection } from '../../types';
 
 type BasePostModel = {
   title: string;

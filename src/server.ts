@@ -1,6 +1,5 @@
 import express, { json } from 'express';
-
-import { blogRoute, postRoute, testingRoute } from '@/routes';
+import { blogRoute, postRoute, testingRoute } from './routes';
 
 export const app = express();
 

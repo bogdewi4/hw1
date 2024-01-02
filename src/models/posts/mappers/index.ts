@@ -1,8 +1,8 @@
 import type { WithId } from 'mongodb';
 
-import { PostDB } from '@/models/db';
-
 import type { PostModel } from '../output';
+
+import type { PostDB } from '../../db';
 
 export const postMapper = ({ _id, ...postDb }: WithId<PostDB>): PostModel => {
   return {

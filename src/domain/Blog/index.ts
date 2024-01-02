@@ -3,10 +3,10 @@ import {
   CreateBlogModel,
   CreatePostBlogModel,
   UpdateBlogModel,
-} from '@/models/blogs';
+} from '../../models/blogs';
 
-import { blogRepository as blogQueryRepository } from '@/query-repositories';
-import { blogRepository, postRepository } from '@/repositories';
+import { blogRepository as blogQueryRepository } from '../../query-repositories';
+import { blogRepository, postRepository } from '../../repositories';
 
 class BlogService {
   async createBlog(createdData: CreateBlogModel) {
