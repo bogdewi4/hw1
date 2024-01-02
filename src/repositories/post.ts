@@ -19,7 +19,7 @@ class PostRepository {
   }
 
   async updatePost(
-    updatedPost: UpdatePostModel & { id: string }
+    updatedPost: UpdatePostModel & { id: string; blogName: string }
   ): Promise<boolean> {
     const post = await this.db.updateOne(
       { _id: new ObjectId(updatedPost.id) },
@@ -29,6 +29,7 @@ class PostRepository {
           shortDescription: updatedPost.shortDescription,
           content: updatedPost.content,
           blogId: updatedPost.blogId,
+          blogName: updatedPost.blogName,
         },
       }
     );

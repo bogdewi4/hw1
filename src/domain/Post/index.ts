@@ -16,7 +16,10 @@ class PostService {
     return createdPost.id;
   }
 
-  async updatePost(postId: string, updatePost: UpdatePostModel) {
+  async updatePost(
+    postId: string,
+    updatePost: UpdatePostModel & { blogName: string }
+  ) {
     return await postRepository.updatePost({ id: postId, ...updatePost });
   }
 

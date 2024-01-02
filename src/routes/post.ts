@@ -102,7 +102,6 @@ postRoute.put(
       return;
     }
 
-
     const blog = await blogQueryRepository.getBlogById(post.blogId);
 
     if (!blog) {
@@ -115,6 +114,7 @@ postRoute.put(
       shortDescription: payload.shortDescription,
       content: payload.content,
       blogId: blog!.id,
+      blogName: blog!.name,
     });
 
     isUpdated
