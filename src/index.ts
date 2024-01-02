@@ -1,8 +1,9 @@
 const path = require('path');
 
 import dotenv from 'dotenv';
-import { runDb } from '@/db';
+
 import { app } from './server';
+import { runDb } from './db';
 
 dotenv.config({
   path: path.join(__dirname, `../.env.${process.env.NODE_ENV}`),
