@@ -89,11 +89,19 @@ postRoute.put(
     res: Response
   ) => {
     const { id } = req.params;
-    const post = req.body;
+    const payload = req.body;
     if (!ObjectId.isValid(id)) {
       res.sendStatus(400);
       return;
     }
+
+    const post = await postQueryRepository.getPostById(id);
+
+    if (!post) {
+      res.sendStatus(HttpStatusCode.NotFound);
+      return;
+    }
+
 
     const blog = await blogQueryRepository.getBlogById(post.blogId);
 
@@ -103,9 +111,9 @@ postRoute.put(
     }
 
     const isUpdated = await postService.updatePost(id, {
-      title: post.title,
-      shortDescription: post.shortDescription,
-      content: post.content,
+      title: payload.title,
+      shortDescription: payload.shortDescription,
+      content: payload.content,
       blogId: blog!.id,
     });
 

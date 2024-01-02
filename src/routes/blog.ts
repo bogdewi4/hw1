@@ -156,7 +156,11 @@ blogRoute.put(
     }
 
     const blog = req.body;
-    const isUpdated = await blogService.updateBlog(id, { ...blog });
+    const isUpdated = await blogService.updateBlog(id, {
+      name: blog.name,
+      description: blog.description,
+      websiteUrl: blog.websiteUrl,
+    });
     isUpdated
       ? res.sendStatus(HttpStatusCode.NoContent)
       : res.sendStatus(HttpStatusCode.NotFound);
