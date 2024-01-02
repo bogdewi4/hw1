@@ -126,6 +126,8 @@ postRoute.delete(
     }
 
     const isDeleted = await postService.deletePost(id);
-    isDeleted ? res.sendStatus(204) : res.sendStatus(404);
+    isDeleted
+      ? res.sendStatus(HttpStatusCode.NoContent)
+      : res.sendStatus(HttpStatusCode.NotFound);
   }
 );

@@ -12,34 +12,34 @@ class BlogRepository {
   }
 
   async createBlog(blog: Omit<BlogModel, 'id'>): Promise<BlogModel> {
-    const post = await this.db.insertOne({ ...blog });
+    const createdBlog = await this.db.insertOne({ ...blog });
 
     return {
       ...blog,
-      id: post.insertedId.toString(),
+      id: createdBlog.insertedId.toString(),
     };
   }
 
   async updateBlog(
-    updatedPost: UpdateBlogModel & { id: string }
+    updateBlog: UpdateBlogModel & { id: string }
   ): Promise<boolean> {
-    const post = await this.db.updateOne(
-      { _id: new ObjectId(updatedPost.id) },
+    const blog = await this.db.updateOne(
+      { _id: new ObjectId(updateBlog.id) },
       {
         $set: {
-          name: updatedPost.name,
-          description: updatedPost.description,
-          websiteUrl: updatedPost.websiteUrl,
+          name: updateBlog.name,
+          description: updateBlog.description,
+          websiteUrl: updateBlog.websiteUrl,
         },
       }
     );
 
-    return !!post.matchedCount;
+    return !!blog.matchedCount;
   }
 
   async deleteBlog(id: string): Promise<boolean> {
-    const post = await this.db.deleteOne({ _id: new ObjectId(id) });
-    return !!post.deletedCount;
+    const blog = await this.db.deleteOne({ _id: new ObjectId(id) });
+    return !!blog.deletedCount;
   }
 }
 
