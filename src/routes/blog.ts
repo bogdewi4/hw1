@@ -73,8 +73,15 @@ blogRoute.get(
       return;
     }
 
-    const posts = await blogQueryRepository.getPostsByBlogId(id, sortData);
-    !posts ? res.sendStatus(HttpStatusCode.NotFound) : res.send(posts);
+    const blog = await blogQueryRepository.getBlogById(id);
+
+    if (!blog) {
+      res.sendStatus(HttpStatusCode.NotFound);
+      return;
+    }
+
+    const post = await blogQueryRepository.getPostsByBlogId(blog.id, sortData);
+    res.send(post);
   }
 );
 

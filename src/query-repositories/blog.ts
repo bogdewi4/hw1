@@ -90,13 +90,13 @@ class BlogRepository {
   }
 
   async getBlogById(id: string): Promise<BlogModel | null> {
-    const post = await this.dbBlog.findOne({ _id: new ObjectId(id) });
+    const blog = await this.dbBlog.findOne({ _id: new ObjectId(id) });
 
-    if (!post) {
+    if (!blog) {
       return null;
     }
 
-    return blogMapper(post);
+    return blogMapper(blog);
   }
 }
 

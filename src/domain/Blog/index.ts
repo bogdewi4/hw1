@@ -1,5 +1,4 @@
 import {
-  BlogModel,
   CreateBlogModel,
   CreatePostBlogModel,
   UpdateBlogModel,
