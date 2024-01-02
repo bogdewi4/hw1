@@ -77,7 +77,7 @@ class BlogRepository {
       .limit(+pageSize)
       .toArray();
 
-    const totalCount = await this.dbBlog.countDocuments({ blogId });
+    const totalCount = await this.dbPost.countDocuments({ blogId });
     const pagesCount = Math.ceil(totalCount / +pageSize);
 
     return {
