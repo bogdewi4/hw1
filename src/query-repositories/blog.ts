@@ -54,9 +54,9 @@ class BlogRepository {
 
     return {
       pagesCount,
-      totalCount,
-      pageSize,
       page: pageNumber,
+      pageSize,
+      totalCount,
       items: blogs.map(blogMapper),
     };
   }
@@ -82,9 +82,9 @@ class BlogRepository {
 
     return {
       pagesCount,
-      totalCount,
-      pageSize,
       page: pageNumber,
+      pageSize,
+      totalCount,
       items: posts.map(postMapper),
     };
   }

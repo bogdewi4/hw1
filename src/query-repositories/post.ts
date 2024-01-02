@@ -36,9 +36,9 @@ class PostRepository {
 
     return {
       pagesCount,
-      totalCount,
-      pageSize,
       page: pageNumber,
+      pageSize,
+      totalCount,
       items: posts.map(postMapper),
     };
   }
