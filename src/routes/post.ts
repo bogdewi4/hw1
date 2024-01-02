@@ -97,12 +97,21 @@ postRoute.put(
 
     const blog = await blogQueryRepository.getBlogById(post.blogId);
 
+    if (!blog) {
+      res.sendStatus(HttpStatusCode.NotFound);
+      return;
+    }
+
     const isUpdated = await postService.updatePost(id, {
-      ...post,
-      blogName: blog!.name,
+      title: post.title,
+      shortDescription: post.shortDescription,
+      content: post.content,
+      blogId: blog!.id,
     });
 
-    isUpdated ? res.sendStatus(204) : res.sendStatus(404);
+    isUpdated
+      ? res.sendStatus(HttpStatusCode.NoContent)
+      : res.sendStatus(HttpStatusCode.NotFound);
   }
 );
 

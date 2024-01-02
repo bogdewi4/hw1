@@ -19,7 +19,7 @@ class PostRepository {
   }
 
   async updatePost(
-    updatedPost: UpdatePostModel & { id: string; blogName: string }
+    updatedPost: UpdatePostModel & { id: string }
   ): Promise<boolean> {
     const post = await this.db.updateOne(
       { _id: new ObjectId(updatedPost.id) },
