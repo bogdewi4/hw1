@@ -1,12 +1,10 @@
 import { type Collection, ObjectId } from 'mongodb';
 
-import { client } from '@/db';
-import type { PostDB } from '@/models/db';
-
-import { type DataWithPagination, SortDir } from '@/types';
-
 import { type PostWithBlogDTO } from '../models/dto';
 import { type QueryPostInputModel, postMapper } from '../models';
+import { PostDB } from '../../../models/db';
+import { DataWithPagination, SortDir } from '../../../types';
+import { client } from '../../../db';
 
 class PostQueryRepository {
   private validateId(id: string) {

@@ -1,17 +1,14 @@
 import { type Collection, ObjectId } from 'mongodb';
 
-import { client } from '@/db';
-import type { BlogDB } from '@/models/db';
-
-import { type DataWithPagination, SortDir } from '@/types';
-
-import { mapMongoDocumentToPlainId } from '@/models/db/mapper';
-
 import type {
   BlogWithMembership,
   QueryBlogInputModel,
   UpdateBlogModel,
 } from '../models';
+import { BlogDB } from '../../../models/db';
+import { DataWithPagination, SortDir } from '../../../types';
+import { mapMongoDocumentToPlainId } from '../../../models/db/mapper';
+import { client } from '../../../db';
 
 class BlogRepository {
   private validateId(id: string) {

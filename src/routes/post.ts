@@ -1,10 +1,7 @@
 import { Router } from 'express';
-
-import { PostsController } from '@/features/posts';
-
-import { authMiddleware } from '@/middlewares/auth';
-
-import { postValidation } from '@/validators/post';
+import { PostsController } from '../features/posts';
+import { authMiddleware } from '../middlewares/auth';
+import { postValidation } from '../validators/post';
 
 export const postRoute = Router();
 

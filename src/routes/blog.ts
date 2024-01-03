@@ -1,10 +1,7 @@
 import { Router } from 'express';
-
-import { BlogController } from '@/features/blogs';
-
-import { authMiddleware } from '@/middlewares/auth';
-
-import { blogPostValidation, blogValidation } from '@/validators/blog';
+import { BlogController } from '../features/blogs';
+import { authMiddleware } from '../middlewares/auth';
+import { blogPostValidation, blogValidation } from '../validators/blog';
 
 export const blogRoute = Router();
 

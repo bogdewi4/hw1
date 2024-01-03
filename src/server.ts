@@ -1,4 +1,3 @@
-import 'module-alias/register';
 import express, { json } from 'express';
 import { blogRoute, postRoute, testingRoute } from './routes';
 

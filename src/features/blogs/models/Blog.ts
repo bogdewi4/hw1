@@ -1,4 +1,4 @@
-import type { BaseDateEntity } from '@/types';
+import type { BaseDateEntity } from '../../../types';
 
 type BaseBlogModel = {
   name: string;
@@ -15,7 +15,8 @@ export type CreatePostBlogModel = {
   content: string;
 };
 
-export type BlogWithMembership = BaseDateEntity & BaseBlogModel & {
-  id: string;
-  isMembership: boolean;
-};
+export type BlogWithMembership = BaseDateEntity &
+  BaseBlogModel & {
+    id: string;
+    isMembership: boolean;
+  };

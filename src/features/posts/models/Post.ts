@@ -1,4 +1,4 @@
-import type { BaseDateEntity } from '@/types';
+import { BaseDateEntity } from '../../../types';
 
 type BasePostModel = {
   title: string;

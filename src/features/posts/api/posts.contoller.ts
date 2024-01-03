@@ -1,14 +1,6 @@
 import { Response } from 'express';
 import { HttpStatusCode } from 'axios';
 
-import { blogQueryRepository } from '@/features/blogs';
-
-import type {
-  RequestWithBody,
-  RequestWithParams,
-  RequestWithQuery,
-} from '@/types';
-
 import { postQueryRepository } from '../repositories';
 
 import { postService } from '../services';
@@ -18,6 +10,12 @@ import type {
   QueryPostInputModel,
   UpdatePostModel,
 } from '../models';
+import {
+  RequestWithBody,
+  RequestWithParams,
+  RequestWithQuery,
+} from '../../../types';
+import { blogQueryRepository } from '../../blogs';
 
 export const PostsController = {
   getPosts: async (

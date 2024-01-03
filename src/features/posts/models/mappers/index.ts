@@ -1,8 +1,7 @@
 import type { WithId } from 'mongodb';
 
-import type { PostDB } from '@/models/db';
-
 import type { PostWithBlogDTO } from '../dto';
+import { PostDB } from '../../../../models/db';
 
 export const postMapper = ({
   _id,

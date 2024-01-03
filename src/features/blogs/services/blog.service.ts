@@ -1,5 +1,3 @@
-import { postRepository } from '@/features/posts';
-
 import { blogRepository } from '../repositories';
 import type {
   BlogWithMembership,
@@ -7,6 +5,7 @@ import type {
   CreatePostBlogModel,
   UpdateBlogModel,
 } from '../models';
+import { postRepository } from '../../posts';
 
 class BlogService {
   async createBlog(createdData: CreateBlogModel) {

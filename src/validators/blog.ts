@@ -1,8 +1,9 @@
 import { body } from 'express-validator';
 
-import { inputValidation } from '@/middlewares/input-model';
+ 
 
 import { basePostValidations } from './post';
+import {inputValidation} from '../middlewares/input-model';
 
 export const nameValidation = body('name')
   .isString()
