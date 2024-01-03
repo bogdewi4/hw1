@@ -1,4 +1,5 @@
 import type { Request } from 'express';
+
 import { ValueOf } from './utils';
 
 export type RequestWithParams<P> = Request<P, {}, {}, {}, {}>;
@@ -19,4 +20,8 @@ export type DataWithPagination<D = any> = {
   pageSize: number;
   totalCount: number;
   items: D;
+};
+
+export type BaseDateEntity = {
+  createdAt: string;
 };

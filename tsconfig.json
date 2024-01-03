@@ -3,12 +3,18 @@
     "target": "es2016",
     "module": "commonjs",
     "outDir": "./dist",
+    "baseUrl": ".",
     "strict": true,
     "noImplicitReturns": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    },
   },
   "include": [
     "src/**/*",
