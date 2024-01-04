@@ -9,7 +9,7 @@ export const AuthController = {
   loginUser: async (req: RequestWithBody<Credential>, res: Response) => {
     const { loginOrEmail, password } = req.body;
 
-    const hasCredential = await userService.checkCredentials(
+    const hasCredential = await userService.checkCredential(
       loginOrEmail,
       password
     );
