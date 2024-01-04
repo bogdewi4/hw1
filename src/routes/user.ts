@@ -1,8 +1,8 @@
 import { Router } from 'express';
 
+import { UsersController } from '../features/users';
 import { authMiddleware } from '../middlewares/auth';
 import { userValidation } from '../validators/user';
-import { UsersController } from '../features/users';
 
 export const userRoute = Router();
 
