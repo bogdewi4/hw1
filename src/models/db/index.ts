@@ -13,3 +13,9 @@ export type PostDB = {
   blogName: string;
   createdAt: string;
 };
+export type UserDB = {
+  login: string;
+  email: string;
+  password: string;
+  createdAt: string;
+};

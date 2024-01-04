@@ -3,7 +3,7 @@ const path = require('path');
 import dotenv from 'dotenv';
 import { MongoClient } from 'mongodb';
 
-import type { BlogDB, PostDB } from '../models/db';
+import type { BlogDB, PostDB, UserDB } from '../models/db';
 
 dotenv.config({
   path: path.join(__dirname, `../../.env.${process.env.NODE_ENV}`),
@@ -19,6 +19,7 @@ export const client = new MongoClient(uri);
 
 export const postCollection = client.db().collection<PostDB>('post');
 export const blogCollection = client.db().collection<BlogDB>('blog');
+export const userCollection = client.db().collection<UserDB>('user');
 
 export const runDb = async () => {
   try {
