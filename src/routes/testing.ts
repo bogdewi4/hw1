@@ -7,5 +7,6 @@ export const testingRoute = Router();
 testingRoute.delete('/all-data', (req: Request, res: Response) => {
   client.db().collection('post').deleteMany({});
   client.db().collection('blog').deleteMany({});
+  client.db().collection('user').deleteMany({});
   res.sendStatus(204);
 });
