@@ -26,8 +26,6 @@ class UserService {
     return await userRepository.deletePost(userId);
   }
 
-  async findUserById(id: string) {}
-
   async checkCredentials(loginOrEmail: string, password: string) {
     const user = await userRepository.findUserByLoginOrEmail(loginOrEmail);
 
